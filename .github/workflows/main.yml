@@ -32,8 +32,12 @@ env:
   TOX_PARALLEL_NO_SPINNER: 1
 
 
+permissions: {}
 jobs:
   test:
+    permissions:
+      contents: read #  to fetch code (actions/checkout)
+
     strategy:
       matrix:
         python:
@@ -92,6 +96,9 @@ jobs:
         jobs: ${{ toJSON(needs) }}
   
   diffcov:
+    permissions:
+      contents: read #  to fetch code (actions/checkout)
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -110,6 +117,9 @@ jobs:
           TOXENV: diffcov
 
   release:
+    permissions:
+      contents: read #  to fetch code (actions/checkout)
+
     needs:
     - check
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
